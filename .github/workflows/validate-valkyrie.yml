@@ -1,0 +1,42 @@
+name: Validate Azure Valkyrie model
+on:
+  push:
+    paths:
+      - 'valkyrie.glb'
+      - '.github/workflows/validate-valkyrie.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate GLB container, meshes, rig and animations
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, struct, sys
+          p=pathlib.Path('valkyrie.glb')
+          if not p.is_file():
+              print('ERROR: valkyrie.glb is missing. Azure Valkyrie has not been published.')
+              sys.exit(1)
+          b=p.read_bytes()
+          if len(b)<20: sys.exit('ERROR: GLB file too short')
+          magic,version,length=struct.unpack_from('<4sII',b)
+          if magic!=b'glTF' or version!=2 or length!=len(b): sys.exit('ERROR: invalid GLB header or size')
+          off=12; doc=None; chunks=[]
+          while off<len(b):
+              if off+8>len(b): sys.exit('ERROR: truncated GLB chunk header')
+              size,kind=struct.unpack_from('<I4s',b,off);off+=8
+              if off+size>len(b): sys.exit('ERROR: truncated GLB chunk')
+              if kind==b'JSON': doc=json.loads(b[off:off+size])
+              chunks.append((kind,size));off+=size
+          if doc is None: sys.exit('ERROR: missing JSON chunk')
+          meshes=len(doc.get('meshes',[]));skins=len(doc.get('skins',[]));anims=len(doc.get('animations',[]))
+          images=len(doc.get('images',[]));joints=sum(len(x.get('joints',[])) for x in doc.get('skins',[]))
+          print(f'Azure Valkyrie: {len(b):,} bytes, {meshes} meshes, {skins} skins, {joints} joints, {anims} animations, {images} images')
+          if not meshes: sys.exit('ERROR: no meshes')
+          if not skins or not joints: sys.exit('ERROR: missing skeletal rig')
+          if not anims: sys.exit('ERROR: missing animation')
+          print('PASS: GLB header, structure, meshes, rig and animations')
+          PY
