@@ -1,0 +1,35 @@
+name: Binary asset pipeline smoke test
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/binary-asset-test.yml'
+permissions:
+  contents: write
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate a valid GLB binary (not Azure Valkyrie)
+        run: |
+          python3 - <<'PY'
+          import json, struct, pathlib
+          # Minimal glTF 2.0 GLB with a triangle, to test binary asset handling.
+          positions=struct.pack('<9f',-1.,0.,0.,1.,0.,0.,0.,1.,0.)
+          gltf={'asset':{'version':'2.0','generator':'Soulbound binary pipeline probe'},'scene':0,'scenes':[{'nodes':[0]}],'nodes':[{'mesh':0}],'meshes':[{'primitives':[{'attributes':{'POSITION':0},'mode':4}]}],'buffers':[{'byteLength':len(positions)}],'bufferViews':[{'buffer':0,'byteOffset':0,'byteLength':len(positions),'target':34962}],'accessors':[{'bufferView':0,'componentType':5126,'count':3,'type':'VEC3','min':[-1,0,0],'max':[1,1,0]}]}
+          chunk=json.dumps(gltf,separators=(',',':')).encode();chunk+=b' ' * (-len(chunk)%4)
+          binary=positions+b'\0'*(-len(positions)%4)
+          output=struct.pack('<4sII',b'glTF',2,12+8+len(chunk)+8+len(binary))+struct.pack('<I4s',len(chunk),b'JSON')+chunk+struct.pack('<I4s',len(binary),b'BIN\0')+binary
+          pathlib.Path('pipeline-probe.glb').write_bytes(output)
+          print('Generated binary GLB:',len(output),'bytes')
+          PY
+      - name: Commit binary probe
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pipeline-probe.glb
+          if ! git diff --cached --quiet; then
+            git commit -m "Verify automated binary GLB publishing [skip ci]"
+            git push
+          fi
