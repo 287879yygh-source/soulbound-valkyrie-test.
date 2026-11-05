@@ -1,0 +1,20 @@
+{
+  "asset": "Azure Valkyrie V12 Controlled Sword Slash",
+  "file": "valkyrie.glb",
+  "bytes": 8060120,
+  "sha256": "05d99c8915f88f1195a57ec962a48a93ad48af4c589fda24230872e903947dd7",
+  "meshes": 2,
+  "skins": 1,
+  "joints": 17,
+  "animations": [
+    {
+      "name": "Sword_Slash_FullBody_V9",
+      "channels": 10
+    }
+  ],
+  "images": 3,
+  "materials": 4,
+  "verified": "local binary inspected",
+  "published": false,
+  "notes": "Manifest of original local model. Do not substitute pipeline-probe.glb."
+}
