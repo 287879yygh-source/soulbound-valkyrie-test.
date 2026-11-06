@@ -52,7 +52,7 @@ if len(tri_counts):
   middle=(rotated.min(axis=0)+rotated.max(axis=0))/2
   radius=max((rotated.max(axis=0)-rotated.min(axis=0)))/2
   ax.set(xlim=(middle[0]-radius,middle[0]+radius),ylim=(middle[1]-radius,middle[1]+radius),zlim=(middle[2]-radius,middle[2]+radius))
-  ax.view_init(elev=5,azim=azimuth)
+  ax.view_init(elev=5,azim=azimuth-90)
   ax.set_proj_type('ortho')
   ax.set_box_aspect((1,1,1.8))
   ax.set_axis_off()
