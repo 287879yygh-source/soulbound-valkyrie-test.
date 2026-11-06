@@ -37,3 +37,5 @@ WELD 7 unique_positions 134210 boundary 140142 shared 1929 nonmanifold 0 collaps
 WELD 6 unique_positions 134210 boundary 140142 shared 1929 nonmanifold 0 collapsed_triangles 0
 WELD 5 unique_positions 134210 boundary 140142 shared 1929 nonmanifold 0 collapsed_triangles 0
 WELD 4 unique_positions 134210 boundary 140142 shared 1929 nonmanifold 0 collapsed_triangles 0
+FACE ISLANDS 40550 isolated_triangles 34486 largest_island_faces 10 island_sizes_top10 [10, 8, 6, 6, 6, 6, 6, 6, 6, 6]
+MESH ATTRIBUTES ['JOINTS_0', 'NORMAL', 'POSITION', 'TEXCOORD_0', 'WEIGHTS_0'] primitive_mode 4
