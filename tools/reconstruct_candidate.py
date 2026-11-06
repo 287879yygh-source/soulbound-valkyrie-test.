@@ -43,7 +43,7 @@ if len(tri_counts):
  rng=np.random.default_rng(17)
  selected=tris
  polygons=verts[selected][:,:,[0,2,1]]
- for label,azimuth in [('front',0),('side',90),('back',180)]:
+ for label,azimuth in [('front',180),('side',90),('back',0),('other-side',270)]:
   fig=plt.figure(figsize=(7,9),dpi=130,facecolor='#18202a')
   ax=fig.add_subplot(111,projection='3d')
   ax.add_collection3d(Poly3DCollection(polygons,facecolor='#3f8ea9',edgecolor='none',alpha=1))
