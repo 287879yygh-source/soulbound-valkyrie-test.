@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libglib2.0-0
-      - run: pip install numpy open3d
+      - run: pip install numpy open3d matplotlib
       - run: python tools/reconstruct_candidate.py > reconstruction-log.txt 2>&1 || true
       - run: cat reconstruction-log.txt
       - run: |
@@ -32,4 +32,5 @@ jobs:
           path: |
             valkyrie-candidate.ply
             valkyrie-main-surface.ply
+            valkyrie-*-mesh-preview.png
             reconstruction-report.json
