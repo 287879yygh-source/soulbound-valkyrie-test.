@@ -73,3 +73,26 @@ for mi,m in enumerate(j.get('meshes',[])):
    _,ct=np.unique(edge,axis=0,return_counts=True)
    degenerate=int(np.sum((welded_tri[:,0]==welded_tri[:,1])|(welded_tri[:,1]==welded_tri[:,2])|(welded_tri[:,2]==welded_tri[:,0])))
    print('WELD',decimals,'unique_positions',int(np.max(inverse)+1),'boundary',int(np.sum(ct==1)),'shared',int(np.sum(ct==2)),'nonmanifold',int(np.sum(ct>2)),'collapsed_triangles',degenerate)
+
+# Quantify face islands and triangle-soup distribution before any destructive repair.
+for mi,m in enumerate(j.get('meshes',[])):
+ for pi,p in enumerate(m['primitives']):
+  if mi!=0 or 'indices' not in p:continue
+  faces=read(p['indices']).ravel().reshape(-1,3).astype(np.int64)
+  n=len(faces);parent=np.arange(n,dtype=np.int64)
+  def root(x):
+   while parent[x]!=x:
+    parent[x]=parent[parent[x]];x=parent[x]
+   return x
+  def union(x,y):
+   x=root(x);y=root(y)
+   if x!=y:parent[y]=x
+  owners={}
+  for fi,face in enumerate(faces):
+   for v in face:
+    v=int(v)
+    if v in owners:union(fi,owners[v])
+    else:owners[v]=fi
+  groups=Counter(root(i) for i in range(n))
+  print('FACE ISLANDS',len(groups),'isolated_triangles',sum(v==1 for v in groups.values()),'largest_island_faces',max(groups.values()),'island_sizes_top10',sorted(groups.values(),reverse=True)[:10])
+  print('MESH ATTRIBUTES',sorted(p['attributes'].keys()),'primitive_mode',p.get('mode',4))
