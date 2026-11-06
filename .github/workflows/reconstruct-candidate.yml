@@ -17,13 +17,24 @@ jobs:
         with:
           python-version: '3.11'
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libglib2.0-0
-      - run: pip install numpy open3d matplotlib
+      - run: pip install numpy open3d matplotlib trimesh
       - run: python -u tools/reconstruct_candidate.py > reconstruction-log.txt 2>&1 || echo 'RECONSTRUCTION FAILED (see traceback above)' >> reconstruction-log.txt
       - run: cat reconstruction-log.txt
+      - run: |
+          python - <<'PY'
+          import trimesh
+          from pathlib import Path
+          p=Path('valkyrie-main-surface.ply')
+          if p.exists():
+              m=trimesh.load(str(p),force='mesh',process=False)
+              m.export('valkyrie-preview.glb')
+              print('Preview GLB:',len(m.vertices),'vertices',len(m.faces),'faces')
+          PY
       - run: |
           git config user.name github-actions
           git config user.email github-actions@users.noreply.github.com
           git add reconstruction-log.txt
+          git add -f valkyrie-preview.glb || true
           git add -f valkyrie-*-mesh-preview.png || true
           git add -f reconstruction-report.json || true
           git commit -m 'Save reconstruction result' || true
@@ -32,6 +43,7 @@ jobs:
         with:
           name: valkyrie-reconstruction-test
           path: |
+            valkyrie-preview.glb
             valkyrie-candidate.ply
             valkyrie-main-surface.ply
             valkyrie-repair-experiment.ply
