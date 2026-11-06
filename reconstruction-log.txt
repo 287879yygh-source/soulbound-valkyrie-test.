@@ -1,3 +1,3 @@
-MAIN SURFACE 132194 vertices 263513 triangles watertight False
-CONNECTED COMPONENTS 83 largest triangles 263513 small islands 71
-{'connected_components': 83, 'largest_component_triangles': 263513, 'small_components_under_100_triangles': 71, 'source_points': 134210, 'candidate_vertices': 134685, 'candidate_triangles': 268062, 'watertight': False, 'note': 'Unrigged test candidate, original GLB unchanged'}
+MAIN SURFACE 132194 vertices 263510 triangles watertight False
+CONNECTED COMPONENTS 83 largest triangles 263510 small islands 71
+{'connected_components': 83, 'largest_component_triangles': 263510, 'small_components_under_100_triangles': 71, 'source_points': 134210, 'candidate_vertices': 134685, 'candidate_triangles': 268059, 'watertight': False, 'note': 'Unrigged test candidate, original GLB unchanged'}
