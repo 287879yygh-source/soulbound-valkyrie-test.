@@ -1,5 +1,6 @@
-REPAIR 127539 254483 False False False True
+ORIENTATION False watertight False self_intersecting True
+REPAIR 127539 254494 False False False True
 REPAIR EDGE CHECK True orientable False
-MAIN SURFACE 127539 vertices 254822 triangles watertight False
-CONNECTED COMPONENTS 76 largest triangles 254822 small islands 74
-{'connected_components': 76, 'largest_component_triangles': 254822, 'small_components_under_100_triangles': 74, 'source_points': 134210, 'candidate_vertices': 128349, 'candidate_triangles': 256143, 'watertight': False, 'main_surface_watertight': False, 'main_surface_edge_manifold_closed': False, 'main_surface_vertex_manifold': True, 'main_surface_self_intersecting': True, 'note': 'Unrigged test candidate, original GLB unchanged'}
+MAIN SURFACE 127539 vertices 254823 triangles watertight False
+CONNECTED COMPONENTS 76 largest triangles 254823 small islands 74
+{'connected_components': 76, 'largest_component_triangles': 254823, 'small_components_under_100_triangles': 74, 'source_points': 134210, 'candidate_vertices': 128349, 'candidate_triangles': 256144, 'watertight': False, 'main_surface_watertight': False, 'main_surface_edge_manifold_closed': False, 'main_surface_vertex_manifold': True, 'main_surface_self_intersecting': True, 'note': 'Unrigged test candidate, original GLB unchanged'}
