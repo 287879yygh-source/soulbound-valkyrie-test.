@@ -32,3 +32,8 @@ TOPOLOGY mesh 1 primitive 3 boundary_edges 0 nonmanifold_edges 0 shared_edges 18
 EDGE LENGTH median 0.054999999701976776 p99 0.07778174430131912 max 0.07778174430131912
 TOPOLOGY mesh 1 primitive 4 boundary_edges 0 nonmanifold_edges 0 shared_edges 6
 EDGE LENGTH median 0.09745568782091141 p99 0.1425798535346985 max 0.1425798535346985
+WELD AUDIT vertices 134629 used vertices 134629
+WELD 7 unique_positions 134210 boundary 140142 shared 1929 nonmanifold 0 collapsed_triangles 0
+WELD 6 unique_positions 134210 boundary 140142 shared 1929 nonmanifold 0 collapsed_triangles 0
+WELD 5 unique_positions 134210 boundary 140142 shared 1929 nonmanifold 0 collapsed_triangles 0
+WELD 4 unique_positions 134210 boundary 140142 shared 1929 nonmanifold 0 collapsed_triangles 0
