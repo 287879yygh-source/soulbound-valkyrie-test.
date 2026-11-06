@@ -41,16 +41,20 @@ if len(tri_counts):
  verts=np.asarray(cleaned.vertices)
  tris=np.asarray(cleaned.triangles)
  rng=np.random.default_rng(17)
- selected=tris[rng.choice(len(tris),size=min(12000,len(tris)),replace=False)]
- polygons=verts[selected]
+ selected=tris[rng.choice(len(tris),size=min(50000,len(tris)),replace=False)]
+ polygons=verts[selected][:,:,[0,2,1]]
  for label,azimuth in [('front',0),('side',90),('back',180)]:
-  fig=plt.figure(figsize=(7,9),dpi=130)
+  fig=plt.figure(figsize=(7,9),dpi=130,facecolor='#18202a')
   ax=fig.add_subplot(111,projection='3d')
-  ax.add_collection3d(Poly3DCollection(polygons,facecolor='#7da8b9',edgecolor='none',alpha=1))
-  middle=(verts.min(axis=0)+verts.max(axis=0))/2
-  radius=max((verts.max(axis=0)-verts.min(axis=0)))/2
+  ax.add_collection3d(Poly3DCollection(polygons,facecolor='#3f8ea9',edgecolor='none',alpha=1))
+  ax.set_facecolor('#18202a')
+  rotated=verts[:,[0,2,1]]
+  middle=(rotated.min(axis=0)+rotated.max(axis=0))/2
+  radius=max((rotated.max(axis=0)-rotated.min(axis=0)))/2
   ax.set(xlim=(middle[0]-radius,middle[0]+radius),ylim=(middle[1]-radius,middle[1]+radius),zlim=(middle[2]-radius,middle[2]+radius))
-  ax.view_init(elev=8,azim=azimuth)
+  ax.view_init(elev=5,azim=azimuth)
+  ax.set_proj_type('ortho')
+  ax.set_box_aspect((1,1,1.8))
   ax.set_axis_off()
   fig.savefig('valkyrie-'+label+'-mesh-preview.png',bbox_inches='tight',facecolor='#18202a')
   plt.close(fig)
