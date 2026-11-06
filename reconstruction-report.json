@@ -1,10 +1,14 @@
 {
   "connected_components": 83,
-  "largest_component_triangles": 263511,
+  "largest_component_triangles": 263509,
   "small_components_under_100_triangles": 71,
   "source_points": 134210,
   "candidate_vertices": 134685,
-  "candidate_triangles": 268060,
+  "candidate_triangles": 268058,
   "watertight": false,
+  "main_surface_watertight": false,
+  "main_surface_edge_manifold_closed": false,
+  "main_surface_vertex_manifold": false,
+  "main_surface_self_intersecting": true,
   "note": "Unrigged test candidate, original GLB unchanged"
 }
