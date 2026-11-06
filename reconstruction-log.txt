@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/runner/work/soulbound-valkyrie-test./soulbound-valkyrie-test./tools/reconstruct_candidate.py", line 3, in <module>
+    import open3d as o3d
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/open3d/__init__.py", line 79, in <module>
+    from open3d.pybind import (
+ImportError: libEGL.so.1: cannot open shared object file: No such file or directory
