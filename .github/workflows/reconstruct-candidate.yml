@@ -5,7 +5,8 @@ on:
       - 'tools/reconstruct_candidate.py'
       - '.github/workflows/reconstruct-candidate.yml'
   workflow_dispatch:
-permissions: write-all
+permissions:
+  contents: write
 jobs:
   reconstruct:
     runs-on: ubuntu-latest
@@ -17,7 +18,7 @@ jobs:
           python-version: '3.11'
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libglib2.0-0
       - run: pip install numpy open3d matplotlib
-      - run: python tools/reconstruct_candidate.py > reconstruction-log.txt 2>&1 || true
+      - run: python -u tools/reconstruct_candidate.py > reconstruction-log.txt 2>&1 || echo 'RECONSTRUCTION FAILED (see traceback above)' >> reconstruction-log.txt
       - run: cat reconstruction-log.txt
       - run: |
           git config user.name github-actions
