@@ -1,14 +1,14 @@
 {
-  "connected_components": 83,
-  "largest_component_triangles": 263510,
-  "small_components_under_100_triangles": 71,
+  "connected_components": 76,
+  "largest_component_triangles": 254824,
+  "small_components_under_100_triangles": 74,
   "source_points": 134210,
-  "candidate_vertices": 134685,
-  "candidate_triangles": 268059,
+  "candidate_vertices": 128349,
+  "candidate_triangles": 256145,
   "watertight": false,
   "main_surface_watertight": false,
   "main_surface_edge_manifold_closed": false,
-  "main_surface_vertex_manifold": false,
+  "main_surface_vertex_manifold": true,
   "main_surface_self_intersecting": true,
   "note": "Unrigged test candidate, original GLB unchanged"
 }
