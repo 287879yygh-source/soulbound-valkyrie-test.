@@ -1,6 +1,9 @@
 name: Valkyrie preview orientation fix
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-preview-orientation.yml'
 permissions:
   contents: write
 jobs:
