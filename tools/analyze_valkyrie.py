@@ -57,3 +57,19 @@ for mi,m in enumerate(j.get('meshes',[])):
    if 'inverseBindMatrices' in j['skins'][0]:
     ibm=read(j['skins'][0]['inverseBindMatrices']).reshape(-1,4,4)
     print('inverse bind translation',ibm[:,3,:3].tolist())
+
+# Geometric welding audit: duplicate vertex positions can explain index-level boundary edges.
+for mi,m in enumerate(j.get('meshes',[])):
+ for pi,p in enumerate(m['primitives']):
+  if mi!=0 or 'indices' not in p:continue
+  pos=read(p['attributes']['POSITION']).astype(np.float64)
+  idx=read(p['indices']).ravel().astype(np.int64)
+  print('WELD AUDIT vertices',len(pos),'used vertices',len(np.unique(idx)))
+  for decimals in (7,6,5,4):
+   rounded=np.round(pos,decimals)
+   _,inverse=np.unique(rounded,axis=0,return_inverse=True)
+   welded_tri=inverse[idx].reshape(-1,3)
+   edge=np.sort(np.concatenate([welded_tri[:,[0,1]],welded_tri[:,[1,2]],welded_tri[:,[2,0]]]),axis=1)
+   _,ct=np.unique(edge,axis=0,return_counts=True)
+   degenerate=int(np.sum((welded_tri[:,0]==welded_tri[:,1])|(welded_tri[:,1]==welded_tri[:,2])|(welded_tri[:,2]==welded_tri[:,0])))
+   print('WELD',decimals,'unique_positions',int(np.max(inverse)+1),'boundary',int(np.sum(ct==1)),'shared',int(np.sum(ct==2)),'nonmanifold',int(np.sum(ct>2)),'collapsed_triangles',degenerate)
