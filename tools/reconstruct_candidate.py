@@ -21,6 +21,10 @@ mesh,d=o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pc,depth=8,n_th
 mesh.remove_vertices_by_mask(np.asarray(d)<np.quantile(d,.03))
 mesh.remove_unreferenced_vertices()
 o3d.io.write_triangle_mesh('valkyrie-candidate.ply',mesh)
-report={'source_points':len(unique),'candidate_vertices':len(mesh.vertices),'candidate_triangles':len(mesh.triangles),'watertight':mesh.is_watertight(),'note':'Unrigged test candidate, original GLB unchanged'}
+mesh.compute_vertex_normals()
+components=mesh.cluster_connected_triangles()
+cluster_ids=np.asarray(components[0]);counts=np.asarray(components[1]);
+print('CONNECTED COMPONENTS',len(counts),'largest triangles',int(counts.max()) if len(counts) else 0,'small islands',int(np.sum(counts<100)))
+report={'connected_components':len(counts),'largest_component_triangles':int(counts.max()) if len(counts) else 0,'small_components_under_100_triangles':int(np.sum(counts<100)),'source_points':len(unique),'candidate_vertices':len(mesh.vertices),'candidate_triangles':len(mesh.triangles),'watertight':mesh.is_watertight(),'note':'Unrigged test candidate, original GLB unchanged'}
 Path('reconstruction-report.json').write_text(json.dumps(report,indent=2))
 print(report)
