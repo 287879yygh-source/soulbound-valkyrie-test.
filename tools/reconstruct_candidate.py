@@ -41,7 +41,7 @@ if len(tri_counts):
  verts=np.asarray(cleaned.vertices)
  tris=np.asarray(cleaned.triangles)
  rng=np.random.default_rng(17)
- selected=tris[rng.choice(len(tris),size=min(50000,len(tris)),replace=False)]
+ selected=tris
  polygons=verts[selected][:,:,[0,2,1]]
  for label,azimuth in [('front',0),('side',90),('back',180)]:
   fig=plt.figure(figsize=(7,9),dpi=130,facecolor='#18202a')
