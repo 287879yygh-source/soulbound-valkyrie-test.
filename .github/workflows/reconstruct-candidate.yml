@@ -33,5 +33,6 @@ jobs:
           path: |
             valkyrie-candidate.ply
             valkyrie-main-surface.ply
+            valkyrie-repair-experiment.ply
             valkyrie-*-mesh-preview.png
             reconstruction-report.json
