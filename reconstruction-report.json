@@ -1,10 +1,10 @@
 {
   "connected_components": 83,
-  "largest_component_triangles": 263507,
+  "largest_component_triangles": 263513,
   "small_components_under_100_triangles": 71,
   "source_points": 134210,
   "candidate_vertices": 134685,
-  "candidate_triangles": 268056,
+  "candidate_triangles": 268062,
   "watertight": false,
   "note": "Unrigged test candidate, original GLB unchanged"
 }
