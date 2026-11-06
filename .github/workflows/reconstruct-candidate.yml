@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libglib2.0-0
-      - run: pip install numpy open3d matplotlib trimesh
+      - run: pip install numpy open3d matplotlib trimesh scipy pillow
       - run: |
           python -u tools/reconstruct_candidate.py > reconstruction-log.txt 2>&1 || { cat reconstruction-log.txt; exit 1; }
       - run: cat reconstruction-log.txt
@@ -28,9 +28,26 @@ jobs:
           p=Path('valkyrie-main-surface.ply')
           if not p.exists():
               raise FileNotFoundError('Reconstruction did not produce valkyrie-main-surface.ply')
+          import numpy as np
+          from scipy.spatial import cKDTree
           m=trimesh.load(str(p),force='mesh',process=False)
+          source=trimesh.load('valkyrie.glb',force='scene',process=False)
+          candidates=[]
+          for node in source.graph.nodes_geometry:
+              transform,geom_name=source.graph[node]
+              geom=source.geometry[geom_name]
+              if len(geom.vertices)<10000: continue
+              rgba=np.asarray(geom.visual.to_color().vertex_colors)
+              if len(rgba)!=len(geom.vertices): continue
+              xyz=trimesh.transform_points(geom.vertices,transform)
+              candidates.append((xyz,rgba))
+          if not candidates: raise RuntimeError('Original GLB contains no usable body vertex or texture colors')
+          xyz=np.concatenate([v for v,_ in candidates])
+          rgba=np.concatenate([v for _,v in candidates])
+          distance,near=cKDTree(xyz).query(m.vertices,k=1,workers=-1)
+          m.visual=trimesh.visual.ColorVisuals(mesh=m,vertex_colors=rgba[near])
           m.export('valkyrie-preview.glb')
-          print('Preview GLB:',len(m.vertices),'vertices',len(m.faces),'faces')
+          print('Colored preview GLB:',len(m.vertices),'vertices',len(m.faces),'faces','source color samples',len(xyz),'mean nearest distance',float(distance.mean()))
           PY
       - run: |
           git config user.name github-actions
