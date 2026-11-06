@@ -35,6 +35,7 @@ jobs:
           git config user.email github-actions@users.noreply.github.com
           git add reconstruction-log.txt
           git add -f valkyrie-preview.glb || true
+          git status --short
           git add -f valkyrie-*-mesh-preview.png || true
           git add -f reconstruction-report.json || true
           git commit -m 'Save reconstruction result' || true
