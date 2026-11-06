@@ -18,17 +18,19 @@ jobs:
           python-version: '3.11'
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libglib2.0-0
       - run: pip install numpy open3d matplotlib trimesh
-      - run: python -u tools/reconstruct_candidate.py > reconstruction-log.txt 2>&1 || echo 'RECONSTRUCTION FAILED (see traceback above)' >> reconstruction-log.txt
+      - run: |
+          python -u tools/reconstruct_candidate.py > reconstruction-log.txt 2>&1 || { cat reconstruction-log.txt; exit 1; }
       - run: cat reconstruction-log.txt
       - run: |
           python - <<'PY'
           import trimesh
           from pathlib import Path
           p=Path('valkyrie-main-surface.ply')
-          if p.exists():
-              m=trimesh.load(str(p),force='mesh',process=False)
-              m.export('valkyrie-preview.glb')
-              print('Preview GLB:',len(m.vertices),'vertices',len(m.faces),'faces')
+          if not p.exists():
+              raise FileNotFoundError('Reconstruction did not produce valkyrie-main-surface.ply')
+          m=trimesh.load(str(p),force='mesh',process=False)
+          m.export('valkyrie-preview.glb')
+          print('Preview GLB:',len(m.vertices),'vertices',len(m.faces),'faces')
           PY
       - run: |
           git config user.name github-actions
