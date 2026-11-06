@@ -41,6 +41,7 @@ if len(tri_counts):
  repaired.compute_vertex_normals()
  o3d.io.write_triangle_mesh('valkyrie-repair-experiment.ply',repaired)
  print('REPAIR',len(repaired.vertices),len(repaired.triangles),repaired.is_watertight(),repaired.is_edge_manifold(allow_boundary_edges=False),repaired.is_vertex_manifold(),repaired.is_self_intersecting())
+ print('REPAIR EDGE CHECK',repaired.is_edge_manifold(allow_boundary_edges=True),'orientable',repaired.is_orientable())
  o3d.io.write_triangle_mesh('valkyrie-main-surface.ply',cleaned)
  print('MAIN SURFACE',len(cleaned.vertices),'vertices',len(cleaned.triangles),'triangles','watertight',cleaned.is_watertight())
  # Save front/side/back diagnostic views from the actual reconstructed mesh.
