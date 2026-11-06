@@ -1,0 +1,18 @@
+GLB bytes 8060120 meshes 2 skins 1 animations 1
+mesh 0 primitive 0 vertices 134629 indices 144000 range [-0.570022 -0.952176 -0.379696] [0.568064 0.950378 0.378584] finite True out_of_range_indices 0
+triangles 48000 zero_area 0 median_area 1.2239078159836936e-06 p99_area 6.732300971634686e-05
+JOINTS_0 shape (134629, 4) min 0 max 16 nonzero 490145
+WEIGHTS_0 shape (134629, 4) min 9.974125e-31 max 0.9999927 nonzero 538516
+weight sums min/max 0.9999998952262104 1.0000001091975719 zero-weight vertices 0
+mesh 1 primitive 0 vertices 8 indices 36 range [-0.0275 -0.59   -0.007 ] [ 0.0275 -0.09    0.007 ] finite True out_of_range_indices 0
+triangles 12 zero_area 0 median_area 0.003499999875202775 p99_area 0.01374999899417162
+mesh 1 primitive 1 vertices 8 indices 36 range [-0.045 -0.135 -0.016] [ 0.045 -0.065  0.016] finite True out_of_range_indices 0
+triangles 12 zero_area 0 median_area 0.001440000138245523 p99_area 0.0031500004697591066
+mesh 1 primitive 2 vertices 8 indices 36 range [-0.0115 -0.07   -0.014 ] [0.0115 0.09   0.014 ] finite True out_of_range_indices 0
+triangles 12 zero_area 0 median_area 0.0018399999244138598 p99_area 0.002240000059828162
+mesh 1 primitive 3 vertices 8 indices 36 range [-0.0275  0.085  -0.0275] [0.0275 0.125  0.0275] finite True out_of_range_indices 0
+triangles 12 zero_area 0 median_area 0.0010999999940395355 p99_area 0.0015124999918043613
+mesh 1 primitive 4 vertices 4 indices 12 range [-0.027 -0.73   0.   ] [ 0.027 -0.59   0.016] finite True out_of_range_indices 0
+triangles 4 zero_area 0 median_area 0.0022075234446674585 p99_area 0.00373282702639699
+skin 0 joints 17
+inverse bind matrices (17, 16) finite True
