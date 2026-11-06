@@ -21,6 +21,18 @@ mesh,d=o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pc,depth=8,n_th
 mesh.remove_vertices_by_mask(np.asarray(d)<np.quantile(d,.03))
 mesh.remove_unreferenced_vertices()
 o3d.io.write_triangle_mesh('valkyrie-candidate.ply',mesh)
+# Keep original candidate and generate a separate largest-component-only candidate.
+tri_clusters,tri_counts,_=mesh.cluster_connected_triangles()
+tri_clusters=np.asarray(tri_clusters)
+tri_counts=np.asarray(tri_counts)
+if len(tri_counts):
+ largest=int(np.argmax(tri_counts))
+ cleaned=o3d.geometry.TriangleMesh(mesh)
+ cleaned.remove_triangles_by_mask(tri_clusters!=largest)
+ cleaned.remove_unreferenced_vertices()
+ cleaned.compute_vertex_normals()
+ o3d.io.write_triangle_mesh('valkyrie-main-surface.ply',cleaned)
+ print('MAIN SURFACE',len(cleaned.vertices),'vertices',len(cleaned.triangles),'triangles','watertight',cleaned.is_watertight())
 mesh.compute_vertex_normals()
 components=mesh.cluster_connected_triangles()
 cluster_ids=np.asarray(components[0]);counts=np.asarray(components[1]);
