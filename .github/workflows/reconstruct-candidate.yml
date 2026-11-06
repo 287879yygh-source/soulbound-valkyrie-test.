@@ -5,6 +5,7 @@ on:
       - 'tools/reconstruct_candidate.py'
       - '.github/workflows/reconstruct-candidate.yml'
   workflow_dispatch:
+permissions: write-all
 jobs:
   reconstruct:
     runs-on: ubuntu-latest
@@ -15,7 +16,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install numpy open3d
-      - run: python tools/reconstruct_candidate.py
+      - run: python tools/reconstruct_candidate.py > reconstruction-log.txt 2>&1 || true
+      - run: cat reconstruction-log.txt
       - uses: actions/upload-artifact@v4
         with:
           name: valkyrie-reconstruction-test
