@@ -31,4 +31,5 @@ jobs:
           name: valkyrie-reconstruction-test
           path: |
             valkyrie-candidate.ply
+            valkyrie-main-surface.ply
             reconstruction-report.json
