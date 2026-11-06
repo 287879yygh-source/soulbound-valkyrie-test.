@@ -34,3 +34,26 @@ for si,skin in enumerate(j.get('skins',[])):
  print('skin',si,'joints',len(skin['joints']))
  if 'inverseBindMatrices' in skin:
   x=read(skin['inverseBindMatrices']);print('inverse bind matrices',x.shape,'finite',np.isfinite(x).all())
+
+# Topology and skinning diagnostics
+from collections import Counter
+for mi,m in enumerate(j.get('meshes',[])):
+ for pi,p in enumerate(m['primitives']):
+  if 'indices' not in p:continue
+  idx=read(p['indices']).ravel().astype(np.int64)
+  if len(idx)%3:continue
+  tri=idx.reshape(-1,3);edges=np.sort(np.concatenate([tri[:,[0,1]],tri[:,[1,2]],tri[:,[2,0]]]),axis=1)
+  unique,counts=np.unique(edges,axis=0,return_counts=True)
+  print('TOPOLOGY mesh',mi,'primitive',pi,'boundary_edges',int(np.sum(counts==1)),'nonmanifold_edges',int(np.sum(counts>2)),'shared_edges',int(np.sum(counts==2)))
+  pos=read(p['attributes']['POSITION'])
+  lengths=np.linalg.norm(pos[edges[:,0]]-pos[edges[:,1]],axis=1)
+  print('EDGE LENGTH median',float(np.median(lengths)),'p99',float(np.percentile(lengths,99)),'max',float(lengths.max()))
+  if 'JOINTS_0' in p['attributes']:
+   a=p['attributes'];joint=read(a['JOINTS_0']).astype(int);w=read(a['WEIGHTS_0']).astype(float)
+   print('dominant joint histogram',dict(Counter(joint[np.arange(len(joint)),np.argmax(w,axis=1)].tolist())))
+   print('skin joint index valid',bool(joint.max()<len(j['skins'][0]['joints'])))
+   print('node transforms',[(n.get('name'),n.get('translation'),n.get('scale')) for n in j.get('nodes',[]) if 'mesh' in n or 'skin' in n])
+   # detect mismatch between local geometry and inverse bind matrix translations
+   if 'inverseBindMatrices' in j['skins'][0]:
+    ibm=read(j['skins'][0]['inverseBindMatrices']).reshape(-1,4,4)
+    print('inverse bind translation',ibm[:,3,:3].tolist())
