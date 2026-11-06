@@ -1,3 +1,4 @@
-MAIN SURFACE 132194 vertices 263509 triangles watertight False
-CONNECTED COMPONENTS 83 largest triangles 263509 small islands 71
-{'connected_components': 83, 'largest_component_triangles': 263509, 'small_components_under_100_triangles': 71, 'source_points': 134210, 'candidate_vertices': 134685, 'candidate_triangles': 268058, 'watertight': False, 'main_surface_watertight': False, 'main_surface_edge_manifold_closed': False, 'main_surface_vertex_manifold': False, 'main_surface_self_intersecting': True, 'note': 'Unrigged test candidate, original GLB unchanged'}
+REPAIR 132193 263258 False False False True
+MAIN SURFACE 132194 vertices 263510 triangles watertight False
+CONNECTED COMPONENTS 83 largest triangles 263510 small islands 71
+{'connected_components': 83, 'largest_component_triangles': 263510, 'small_components_under_100_triangles': 71, 'source_points': 134210, 'candidate_vertices': 134685, 'candidate_triangles': 268059, 'watertight': False, 'main_surface_watertight': False, 'main_surface_edge_manifold_closed': False, 'main_surface_vertex_manifold': False, 'main_surface_self_intersecting': True, 'note': 'Unrigged test candidate, original GLB unchanged'}

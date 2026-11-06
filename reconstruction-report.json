@@ -1,10 +1,10 @@
 {
   "connected_components": 83,
-  "largest_component_triangles": 263509,
+  "largest_component_triangles": 263510,
   "small_components_under_100_triangles": 71,
   "source_points": 134210,
   "candidate_vertices": 134685,
-  "candidate_triangles": 268058,
+  "candidate_triangles": 268059,
   "watertight": false,
   "main_surface_watertight": false,
   "main_surface_edge_manifold_closed": false,
