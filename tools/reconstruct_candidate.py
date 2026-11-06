@@ -33,6 +33,27 @@ if len(tri_counts):
  cleaned.compute_vertex_normals()
  o3d.io.write_triangle_mesh('valkyrie-main-surface.ply',cleaned)
  print('MAIN SURFACE',len(cleaned.vertices),'vertices',len(cleaned.triangles),'triangles','watertight',cleaned.is_watertight())
+ # Save front/side/back diagnostic views from the actual reconstructed mesh.
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+ verts=np.asarray(cleaned.vertices)
+ tris=np.asarray(cleaned.triangles)
+ rng=np.random.default_rng(17)
+ selected=tris[rng.choice(len(tris),size=min(12000,len(tris)),replace=False)]
+ polygons=verts[selected]
+ for label,azimuth in [('front',0),('side',90),('back',180)]:
+  fig=plt.figure(figsize=(7,9),dpi=130)
+  ax=fig.add_subplot(111,projection='3d')
+  ax.add_collection3d(Poly3DCollection(polygons,facecolor='#7da8b9',edgecolor='none',alpha=1))
+  middle=(verts.min(axis=0)+verts.max(axis=0))/2
+  radius=max((verts.max(axis=0)-verts.min(axis=0)))/2
+  ax.set(xlim=(middle[0]-radius,middle[0]+radius),ylim=(middle[1]-radius,middle[1]+radius),zlim=(middle[2]-radius,middle[2]+radius))
+  ax.view_init(elev=8,azim=azimuth)
+  ax.set_axis_off()
+  fig.savefig('valkyrie-'+label+'-mesh-preview.png',bbox_inches='tight',facecolor='#18202a')
+  plt.close(fig)
 mesh.compute_vertex_normals()
 components=mesh.cluster_connected_triangles()
 cluster_ids=np.asarray(components[0]);counts=np.asarray(components[1]);
