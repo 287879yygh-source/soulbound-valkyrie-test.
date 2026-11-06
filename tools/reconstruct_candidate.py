@@ -62,6 +62,6 @@ mesh.compute_vertex_normals()
 components=mesh.cluster_connected_triangles()
 cluster_ids=np.asarray(components[0]);counts=np.asarray(components[1]);
 print('CONNECTED COMPONENTS',len(counts),'largest triangles',int(counts.max()) if len(counts) else 0,'small islands',int(np.sum(counts<100)))
-report={'connected_components':len(counts),'largest_component_triangles':int(counts.max()) if len(counts) else 0,'small_components_under_100_triangles':int(np.sum(counts<100)),'source_points':len(unique),'candidate_vertices':len(mesh.vertices),'candidate_triangles':len(mesh.triangles),'watertight':mesh.is_watertight(),'note':'Unrigged test candidate, original GLB unchanged'}
+report={'connected_components':len(counts),'largest_component_triangles':int(counts.max()) if len(counts) else 0,'small_components_under_100_triangles':int(np.sum(counts<100)),'source_points':len(unique),'candidate_vertices':len(mesh.vertices),'candidate_triangles':len(mesh.triangles),'watertight':mesh.is_watertight(),'main_surface_watertight':cleaned.is_watertight(),'main_surface_edge_manifold_closed':cleaned.is_edge_manifold(allow_boundary_edges=False),'main_surface_vertex_manifold':cleaned.is_vertex_manifold(),'main_surface_self_intersecting':cleaned.is_self_intersecting(),'note':'Unrigged test candidate, original GLB unchanged'}
 Path('reconstruction-report.json').write_text(json.dumps(report,indent=2))
 print(report)
