@@ -1,0 +1,39 @@
+name: Assemble authentic Azure Valkyrie V12
+on:
+  push:
+    paths:
+      - '.github/workflows/assemble-valkyrie.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Assemble original model and verify exact checksum
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, pathlib, struct
+          parts=sorted(pathlib.Path('model-parts').glob('part-*.txt'))
+          assert len(parts)==21, f'Expected 21 chunks, found {len(parts)}'
+          encoded=''.join(p.read_text(encoding='ascii') for p in parts)
+          raw=base64.b64decode(encoded,validate=True)
+          expected='05d99c8915f88f1195a57ec962a48a93ad48af4c589fda24230872e903947dd7'
+          digest=hashlib.sha256(raw).hexdigest()
+          assert digest==expected, f'Original file SHA256 mismatch: {digest}'
+          assert len(raw)==8060120, f'Unexpected byte count: {len(raw)}'
+          assert raw[:4]==b'glTF' and struct.unpack_from('<I',raw,4)[0]==2
+          pathlib.Path('valkyrie.glb').write_bytes(raw)
+          print(f'PASS: authentic Azure Valkyrie V12, {len(raw)} bytes, sha256 {digest}')
+          PY
+      - name: Commit reconstructed original GLB
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add valkyrie.glb
+          git rm -r model-parts
+          git commit -m "Publish checksum-verified original Azure Valkyrie V12 GLB"
+          git push
