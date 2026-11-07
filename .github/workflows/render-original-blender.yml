@@ -14,12 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt-get update && sudo apt-get install -y blender
-      - run: blender -b -t 2 --python tools/render_original_blender.py > blender-original-log.txt 2>&1
+      - run: |
+          blender -b -t 2 --python tools/render_original_blender.py > blender-original-log.txt 2>&1 || echo 'BLENDER_FAILED' >> blender-original-log.txt
       - run: tail -n 50 blender-original-log.txt
       - run: |
           git config user.name github-actions
           git config user.email github-actions@users.noreply.github.com
-          git add -f blender-original-valkyrie.png blender-original-log.txt
+          git add -f blender-original-log.txt
+          if test -f blender-original-valkyrie.png; then git add -f blender-original-valkyrie.png; fi
           git commit -m 'Save original Valkyrie Blender render' || true
           git pull --rebase
           git push
